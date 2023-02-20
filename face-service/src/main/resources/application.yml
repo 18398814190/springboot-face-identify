@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /FaceRecognition
 
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+
+face:
+  config:
+    enable: true
+    apiSecret: 1ZV70Hh5JbP1KEKL0m-INs_zRJbNfKHo
+    apiKey: -YYaph4xNJN-ZSr3bDDnRxm8QazoCkPe
