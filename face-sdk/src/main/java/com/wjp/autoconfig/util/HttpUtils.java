@@ -1,5 +1,6 @@
 package com.wjp.autoconfig.util;
 
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -115,7 +116,7 @@ public class HttpUtils {
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
                 httpPost.abort();
-                throw new RuntimeException("HttpClient,error status code :" + statusCode);
+                throw new HttpException("HttpClient,error status code :" + statusCode);
             }
             HttpEntity entity = response.getEntity();
             String result = null;
