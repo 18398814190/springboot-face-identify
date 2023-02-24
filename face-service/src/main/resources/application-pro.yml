@@ -1,0 +1,19 @@
+tempFile: /usr/tempFile
+
+face:
+  config:
+    # 构建FaceTeplate开关
+    enable: true
+    apiSecret: 1ZV70Hh5JbP1KEKL0m-INs_zRJbNfKHo
+    apiKey: -YYaph4xNJN-ZSr3bDDnRxm8QazoCkPe
+    # 第三方接口服务地址
+    baseUrl: https://api-cn.faceplusplus.com/facepp/v3
+    # 人脸相似度通过标准
+    confidence: 85
+
+spring:
+  datasource:
+    password: root
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/face_recognition?useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai

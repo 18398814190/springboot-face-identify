@@ -3,7 +3,10 @@ package com.wjp.controller;
 import bean.ResultVO;
 import com.wjp.autoconfig.template.FaceTemplate;
 import com.wjp.service.FaceRecognitionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/face")
+@Slf4j
 public class FaceRecognitionController {
 
     @Autowired
@@ -22,6 +26,13 @@ public class FaceRecognitionController {
 
     @Autowired
     private FaceRecognitionService faceRecognitionService;
+
+
+    @Value("${tempFile}")
+    private String tempFileDir;
+
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 
     @GetMapping
     public ResultVO<Object> test() throws IOException {
@@ -47,8 +58,9 @@ public class FaceRecognitionController {
         faceTemplate.deleteFace("wjpTest", faceToken);
         boolean wjpTest2 = faceTemplate.searchFace("wjpTest", faceToken);
         return ResultVO.success(wjpTest2);*/
+        redisTemplate.opsForValue().set("wjp", "1234564");
 
-        return null;
+        return ResultVO.success(redisTemplate.opsForValue().get("wjp"));
     }
 
     /**
@@ -58,14 +70,23 @@ public class FaceRecognitionController {
      */
     @PostMapping("/detect")
     public ResultVO<String> detect(MultipartFile file) throws IOException {
-        String detect = faceTemplate.detectFile(MultipartFileToFile(file));
-        // 获取faceToken
-        String face_token = faceRecognitionService.getFaceToken(detect);
+        String face_token;
+        File faceFile = null;
+        try {
+            faceFile = MultipartFileToFile(file);
+            String detect = faceTemplate.detectFile(faceFile);
+            // 获取faceToken
+            face_token = faceRecognitionService.getFaceToken(detect);
+        } finally {
+            if (faceFile != null) {
+                faceFile.delete();
+            }
+        }
         return ResultVO.success(face_token);
     }
 
 
-    public static File MultipartFileToFile(MultipartFile multiFile) {
+    public File MultipartFileToFile(MultipartFile multiFile) {
         // 获取文件名
         String fileName = multiFile.getOriginalFilename();
         // 获取文件后缀
@@ -73,11 +94,15 @@ public class FaceRecognitionController {
         // 若需要防止生成的临时文件重复,可以在文件名后添加随机码
 
         try {
-            File file = File.createTempFile(fileName, prefix);
+            File fileDir = new File(tempFileDir);
+            if (!fileDir.exists()) {
+                fileDir.mkdirs();
+            }
+            File file = File.createTempFile(fileName, prefix, fileDir);
             multiFile.transferTo(file);
             return file;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("error : {}", e.getMessage());
         }
         return null;
     }

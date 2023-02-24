@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjp.mapper.CompanyInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wjp.pojo.CompanyInfo">
+        <id column="id" property="id" />
+        <result column="company_name" property="companyName" />
+        <result column="company_owner" property="companyOwner" />
+        <result column="company_describe" property="companyDescribe" />
+        <result column="company_address" property="companyAddress" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="limit_time" property="limitTime" />
+        <result column="creater_time" property="createrTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, company_name, company_owner, company_describe, company_address, delete_flag, limit_time, creater_time, update_time
+    </sql>
+
+</mapper>

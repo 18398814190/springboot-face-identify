@@ -3,12 +3,8 @@ server:
   servlet:
     context-path: /FaceRecognition
 
+spring:
+  profiles:
+    active: beta
 
-face:
-  config:
-    enable: true
-    apiSecret: 1ZV70Hh5JbP1KEKL0m-INs_zRJbNfKHo
-    apiKey: -YYaph4xNJN-ZSr3bDDnRxm8QazoCkPe
-    baseUrl: https://api-cn.faceplusplus.com/facepp/v3
-    # 人脸相似度通过标准
-    confidence: 85
+
