@@ -32,6 +32,17 @@ public class CompanyController {
     }
 
     /**
+     * 公司名是否存在查询
+     *
+     * @param companyName
+     * @return
+     */
+    @PostMapping("/exist")
+    public ResultVO<Boolean> createCompany(String companyName) {
+        return ResultVO.success(companyService.exist(companyName));
+    }
+
+    /**
      * 公司信息修改
      *
      * @param companyDTO

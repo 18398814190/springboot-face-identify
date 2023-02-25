@@ -111,6 +111,16 @@ public class CompanyServiceImpl implements CompanyService {
         companyInfoMapper.updateById(update);
     }
 
+    @Override
+    public boolean exist(String companyName) {
+        LambdaQueryWrapper<CompanyInfo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(CompanyInfo::getCompanyName, companyName);
+        if (companyInfoMapper.selectCount(lqw) > 0) {
+            return true;
+        }
+        return false;
+    }
+
     private void checkRole(CompanyDTO companyDTO) {
         int userId = ThreadLocalUtils.getUserId();
         Integer id = companyDTO.getId();

@@ -11,4 +11,6 @@ public interface CompanyService {
     List<CompanyVO> getCompanyList();
 
     void updateCompany(CompanyDTO companyDTO);
+
+    boolean exist(String companyName);
 }
