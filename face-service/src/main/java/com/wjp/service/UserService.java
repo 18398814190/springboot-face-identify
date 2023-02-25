@@ -1,7 +1,7 @@
 package com.wjp.service;
 
-import bean.vo.LoginVo;
+import bean.vo.LoginVO;
 
 public interface UserService {
-    LoginVo login(String phone, String code);
+    LoginVO login(String phone, String code);
 }

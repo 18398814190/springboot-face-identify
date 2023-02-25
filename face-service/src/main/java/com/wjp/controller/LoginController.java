@@ -2,8 +2,8 @@ package com.wjp.controller;
 
 import bean.dto.LoginDTO;
 import bean.dto.UserInfoDTO;
-import bean.vo.LoginVo;
-import bean.vo.ResultVo;
+import bean.vo.LoginVO;
+import bean.vo.ResultVO;
 import com.wjp.autoconfig.template.SmsTemplate;
 import com.wjp.constant.FaceConstants;
 import com.wjp.exception.FaceErrorEnum;
@@ -50,19 +50,19 @@ public class LoginController {
     private String tempFileDir;
 
     @GetMapping("/send/code")
-    public ResultVo<Object> sendCode(String phoneNmuber) {
+    public ResultVO<Object> sendCode(String phoneNmuber) {
         String key = FaceConstants.CODE_KEY + phoneNmuber;
         String code = redisTemplate.opsForValue().get(key);
         if (StringUtils.isNotEmpty(code)) {
-            return ResultVo.error("验证码未失效，请使用已发送的验证码");
+            return ResultVO.error("验证码未失效，请使用已发送的验证码");
         }
         String randomCode = String.valueOf(CommonUtils.generateValidateCode(4));
         String sendPhone = FaceConstants.PHONE_PREIX + phoneNmuber;
         if (smsTemplate.sendSms(randomCode, sendPhone)) {
             redisTemplate.opsForValue().set(key, randomCode, 5, TimeUnit.MINUTES);
-            return ResultVo.success("短信发送成功");
+            return ResultVO.success("短信发送成功");
         }
-        return ResultVo.error("验证码发送失败");
+        return ResultVO.error("验证码发送失败");
     }
 
     /**
@@ -72,14 +72,14 @@ public class LoginController {
      * @return
      */
     @PostMapping("/loginVerification")
-    public ResultVo<LoginVo> loginVerification(@RequestBody @Valid LoginDTO loginDTO) {
+    public ResultVO<LoginVO> loginVerification(@RequestBody @Valid LoginDTO loginDTO) {
         //  1.获取前端手机号和验证码
         String phone = loginDTO.getPhone();
         String code = loginDTO.getVerificationCode();
         //  2.调用Service层
-        LoginVo resultMap = userService.login(phone, code);
+        LoginVO resultMap = userService.login(phone, code);
         //  3.返回结果
-        return ResultVo.success(resultMap);
+        return ResultVO.success(resultMap);
     }
 
     /**
@@ -87,9 +87,9 @@ public class LoginController {
      * ResponseEntity:响应实体对象
      */
     @PostMapping("/loginReginfo")
-    public ResultVo loginReginfo(@RequestBody UserInfoDTO userInfoDTO) {
+    public ResultVO loginReginfo(@RequestBody UserInfoDTO userInfoDTO) {
         userInfoService.loginReginfo(userInfoDTO);
-        return ResultVo.success(null);
+        return ResultVO.success(null);
     }
 
     /**
@@ -99,17 +99,17 @@ public class LoginController {
      * @return
      */
     @PostMapping("/loginReginfo/head")
-    public ResultVo uphead(@RequestParam("file") MultipartFile headPhoto) {
+    public ResultVO uphead(@RequestParam("file") MultipartFile headPhoto) {
         try {
             CommonUtils.uploadVerify(headPhoto);
-            return ResultVo.success(userInfoService.uphead(headPhoto));
+            return ResultVO.success(userInfoService.uphead(headPhoto));
         } catch (IOException e) {
-            return ResultVo.error(e.getMessage());
+            return ResultVO.error(e.getMessage());
         }
     }
 
     @GetMapping("/image/download")
-    public ResultVo downloadImage(String imageUrl, HttpServletResponse response) {
+    public ResultVO downloadImage(String imageUrl, HttpServletResponse response) {
         File file = new File(tempFileDir + imageUrl);
         BufferedInputStream inputStream = null;
         ServletOutputStream outputStream = null;
@@ -117,7 +117,7 @@ public class LoginController {
             inputStream = new BufferedInputStream(new FileInputStream(file));
             outputStream = response.getOutputStream();
             IOUtils.copy(inputStream, outputStream);
-            return ResultVo.success(null);
+            return ResultVO.success(null);
         } catch (Exception e) {
             throw new FaceException(FaceErrorEnum.FILE_DOWNLOAD_EXCEPTION);
         } finally {

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 拦截器配置类
  */
-//@Configuration
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginIntercepter)
-                .excludePathPatterns("/user/login","/user/loginVerification")  //配置不需要拦截的路径 登录路径
+                .excludePathPatterns("/login/send/code","/login/loginVerification")  //配置不需要拦截的路径 登录路径
                 .addPathPatterns("/**"); //配置拦击路径 非登录
     }
 }

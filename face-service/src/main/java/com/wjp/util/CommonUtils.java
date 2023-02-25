@@ -50,16 +50,13 @@ public class CommonUtils {
         if (originalFilename == null) {
             throw new RuntimeException("文件名字不能为空！");
         }
-        boolean nameFlag = false;
+
         for (String str : FILE_NAME_EXCLUDE) {
             if (originalFilename.contains(str)) {
-                nameFlag = true;
-                break;
+                throw new RuntimeException("文件名字不允许出现:"+ str +"符号！");
             }
         }
-        if(nameFlag){
-            throw new RuntimeException("文件名字不允许出现"+ Arrays.toString(FILE_NAME_EXCLUDE) +"关键字！");
-        }
+
 
         // 校验文件后缀
         if (!originalFilename.contains(".")) {

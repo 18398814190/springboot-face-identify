@@ -2,6 +2,7 @@ package com.wjp.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,10 +31,17 @@ public class CompanyInfo extends BasePojo implements Serializable {
      */
     private String companyName;
 
+
+    /**
+     * 图标
+     */
+    private String companyIcon;
+
+
     /**
      * 所属人
      */
-    private String companyOwner;
+    private Integer companyOwner;
 
     /**
      * 描述
@@ -46,8 +54,14 @@ public class CompanyInfo extends BasePojo implements Serializable {
     private String companyAddress;
 
     /**
+     * 经纬度
+     */
+    private String companyCoordinate;
+
+    /**
      * 删除标记 1代表删除
      */
+    @TableLogic(value = "0", delval = "1")
     private Integer deleteFlag;
 
     /**

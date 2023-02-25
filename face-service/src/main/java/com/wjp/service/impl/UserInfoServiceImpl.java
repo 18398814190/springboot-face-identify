@@ -1,13 +1,12 @@
 package com.wjp.service.impl;
 
 import bean.dto.UserInfoDTO;
-import com.wjp.autoconfig.template.FaceTemplate;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wjp.exception.FaceErrorEnum;
 import com.wjp.exception.FaceException;
 import com.wjp.mapper.UserInfoMapper;
 import com.wjp.pojo.BaseUser;
 import com.wjp.pojo.UserInfo;
-import com.wjp.service.FaceRecognitionService;
 import com.wjp.service.UserInfoService;
 import com.wjp.util.ThreadLocalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,13 +39,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void loginReginfo(UserInfoDTO userInfoDTO) {
         BaseUser user = ThreadLocalUtils.getUser();
-        //3.如果已经登录，保存用户信息
+        // 如果已经登录，保存用户信息
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(userInfoDTO, userInfo);
-        userInfo.setId(user.getId());
+        userInfo.setUserId(user.getId());
         // 设置年龄
         userInfo.setUserAge(getAge(userInfoDTO.getUserBirthday()));
-        userInfoMapper.insert(userInfo);
+        LambdaQueryWrapper<UserInfo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(UserInfo::getUserId, user.getId());
+        UserInfo selectOne = userInfoMapper.selectOne(lqw);
+        if (selectOne != null) {
+            userInfoMapper.update(userInfo, lqw);
+        } else {
+            userInfoMapper.insert(userInfo);
+        }
+
     }
 
     /**

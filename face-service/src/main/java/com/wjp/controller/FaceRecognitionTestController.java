@@ -1,6 +1,7 @@
 package com.wjp.controller;
 
-import bean.vo.ResultVo;
+import bean.vo.ResultVO;
+import com.wjp.autoconfig.template.BaiduTemplate;
 import com.wjp.autoconfig.template.FaceTemplate;
 import com.wjp.service.FaceRecognitionService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,8 +37,12 @@ public class FaceRecognitionTestController {
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
 
+
+    @Resource
+    private BaiduTemplate baiduTemplate;
+
     @GetMapping
-    public ResultVo<Object> test() throws IOException {
+    public ResultVO<Object> test() throws IOException {
         // 解析人脸图片
         // String detect = faceTemplate.detect("C:\\Users\\17297\\Desktop\\test.jpg");
         // 创建FaceSet
@@ -61,7 +67,11 @@ public class FaceRecognitionTestController {
         return ResultVO.success(wjpTest2);*/
         //redisTemplate.opsForValue().set("wjp", "1234564");
         //smsTemplate.sendSms("172979", "18398814190")
-        return ResultVo.success(null);
+
+/*        String addressInfoByLngAndLat = baiduTemplate.getAddressInfoByLngAndLat("114.081391", "22.626695");
+        Map<String, Double> map = baiduTemplate.getLngAndLat(addressInfoByLngAndLat);
+        double distance = baiduTemplate.getDistance(map.get("jd"), map.get("wd"), 114.081391, 22.626695);*/
+        return ResultVO.success(null);
     }
 
     /**
@@ -70,7 +80,7 @@ public class FaceRecognitionTestController {
      * @throws IOException
      */
     @PostMapping("/detect")
-    public ResultVo<String> detect(MultipartFile file) throws IOException {
+    public ResultVO<String> detect(MultipartFile file) throws IOException {
         String face_token;
         File faceFile = null;
         try {
@@ -83,7 +93,7 @@ public class FaceRecognitionTestController {
                 faceFile.delete();
             }
         }
-        return ResultVo.success(face_token);
+        return ResultVO.success(face_token);
     }
 
 

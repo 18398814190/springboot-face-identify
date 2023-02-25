@@ -1,6 +1,6 @@
 package com.wjp.service.impl;
 
-import bean.vo.LoginVo;
+import bean.vo.LoginVO;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wjp.constant.FaceConstants;
@@ -16,8 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -30,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private BaseUserMapper baseUserMapper;
 
     @Override
-    public LoginVo login(String phone, String code) {
+    public LoginVO login(String phone, String code) {
 //        1.根据传来的phone查询redis，是否有验证码
         String key = FaceConstants.CODE_KEY + phone;
         String redisCode = redisTemplate.opsForValue().get(key);
@@ -65,7 +63,7 @@ public class UserServiceImpl implements UserService {
         // 7天登录失效
         redisTemplate.opsForValue().set(tokenKey, userStr, 7, TimeUnit.DAYS);
 //        9.返回登录成功的数据（1.token 2.isNew）
-        LoginVo map = new LoginVo();
+        LoginVO map = new LoginVO();
         map.setToken(token);
         map.setUserFlag(isNew);
 

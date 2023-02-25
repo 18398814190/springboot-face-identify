@@ -1,6 +1,6 @@
 package com.wjp.exception;
 
-import bean.vo.ResultVo;
+import bean.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,17 +16,17 @@ public class GlobalExceptionHandle {
      * @return
      */
     @ExceptionHandler(FaceException.class)
-    public ResultVo<String> handleFaceException(FaceException exception){
+    public ResultVO<String> handleFaceException(FaceException exception){
         if(ObjectUtils.isNotEmpty(exception.getErrData())){
-            return ResultVo.error(exception.getErrData().getMessage());
+            return ResultVO.error(exception.getErrData().getMessage());
         }
         log.error("发生异常: 异常信息 ：{}",exception.getMessage());
-        return ResultVo.error("未知异常");
+        return ResultVO.error("未知异常");
     }
 
     @ExceptionHandler(Exception.class)
-    public ResultVo<String> handleException(Exception ex){
+    public ResultVO<String> handleException(Exception ex){
         log.error("发生异常: 异常信息 ：{}",ex.getMessage());
-        return ResultVo.error(ex.getMessage());
+        return ResultVO.error(ex.getMessage());
     }
 }

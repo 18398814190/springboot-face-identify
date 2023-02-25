@@ -39,3 +39,8 @@ tencent:
     secretId: AKID2a2OYUFPPEpEvTntrmbHpJafYHqJE152
     secretKey: zmNo23reJpBVhnsqgPwHS7f7QdgYEfx6
     SdkAppId: 1400798338
+
+baidu:
+  config:
+    enable: true
+    ak: QcKshLHzPB9mMAVq1yFvsAk6oldKcpXu
