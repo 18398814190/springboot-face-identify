@@ -101,6 +101,7 @@ public class LoginController {
     @PostMapping("/loginReginfo/head")
     public ResultVo uphead(@RequestParam("file") MultipartFile headPhoto) {
         try {
+            CommonUtils.uploadVerify(headPhoto);
             return ResultVo.success(userInfoService.uphead(headPhoto));
         } catch (IOException e) {
             return ResultVo.error(e.getMessage());
