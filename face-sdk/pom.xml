@@ -44,5 +44,12 @@
             <artifactId>face-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- 腾讯云SKD -->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java-sms</artifactId>
+            <version>3.1.697</version>
+        </dependency>
     </dependencies>
 </project>

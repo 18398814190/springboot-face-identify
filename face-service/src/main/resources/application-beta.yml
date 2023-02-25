@@ -26,8 +26,16 @@ face:
     confidence: 85
 
 # 临时文件存放目录（windows）
-tempFile: D:/tempFile
+tempFile: D:/tempFile/
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+tencent:
+  sms:
+    enable: true
+    signName: 想吃肉0公众号
+    templateId: 1713523
+    secretId: AKID2a2OYUFPPEpEvTntrmbHpJafYHqJE152
+    secretKey: zmNo23reJpBVhnsqgPwHS7f7QdgYEfx6
+    SdkAppId: 1400798338

@@ -1,6 +1,6 @@
 package com.wjp.controller;
 
-import bean.ResultVO;
+import bean.vo.ResultVo;
 import com.wjp.autoconfig.template.FaceTemplate;
 import com.wjp.service.FaceRecognitionService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,11 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/face")
 @Slf4j
-public class FaceRecognitionController {
+public class FaceRecognitionTestController {
 
     @Autowired
     private FaceTemplate faceTemplate;
+
 
     @Autowired
     private FaceRecognitionService faceRecognitionService;
@@ -35,7 +36,7 @@ public class FaceRecognitionController {
     private RedisTemplate<String,String> redisTemplate;
 
     @GetMapping
-    public ResultVO<Object> test() throws IOException {
+    public ResultVo<Object> test() throws IOException {
         // 解析人脸图片
         // String detect = faceTemplate.detect("C:\\Users\\17297\\Desktop\\test.jpg");
         // 创建FaceSet
@@ -58,9 +59,9 @@ public class FaceRecognitionController {
         faceTemplate.deleteFace("wjpTest", faceToken);
         boolean wjpTest2 = faceTemplate.searchFace("wjpTest", faceToken);
         return ResultVO.success(wjpTest2);*/
-        redisTemplate.opsForValue().set("wjp", "1234564");
-
-        return ResultVO.success(redisTemplate.opsForValue().get("wjp"));
+        //redisTemplate.opsForValue().set("wjp", "1234564");
+        //smsTemplate.sendSms("172979", "18398814190")
+        return ResultVo.success(null);
     }
 
     /**
@@ -69,7 +70,7 @@ public class FaceRecognitionController {
      * @throws IOException
      */
     @PostMapping("/detect")
-    public ResultVO<String> detect(MultipartFile file) throws IOException {
+    public ResultVo<String> detect(MultipartFile file) throws IOException {
         String face_token;
         File faceFile = null;
         try {
@@ -82,7 +83,7 @@ public class FaceRecognitionController {
                 faceFile.delete();
             }
         }
-        return ResultVO.success(face_token);
+        return ResultVo.success(face_token);
     }
 
 

@@ -42,7 +42,7 @@ public class UserInfo extends BasePojo implements Serializable {
     /**
      * 年龄
      */
-    private String userAge;
+    private Integer userAge;
 
     /**
      * 用户头像

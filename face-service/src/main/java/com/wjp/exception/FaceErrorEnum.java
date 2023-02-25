@@ -6,7 +6,15 @@ import lombok.Getter;
 @Getter
 public enum FaceErrorEnum {
 
-    FACE_NUM_EXCEPTION(100, "face_num can not big than 1");
+    FACE_NUM_EXCEPTION(100, "人脸检测异常"),
+
+    CODE_MISS_EXCEPTION(101, "验证码失效"),
+
+    CODE_CHECK_EXCEPTION(102, "验证码输入错误"),
+
+    SESSION_INVALID(103, "登录失效，请重新登录"),
+
+    FILE_DOWNLOAD_EXCEPTION(104, "文件传输异常");
 
     private Integer code;
 

@@ -5,7 +5,7 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>    <!-- 日志文件输出 -->
-<!--    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/mylog.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/mylog.%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -14,7 +14,7 @@
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-    </appender>    -->
+    </appender>
     <!-- 日志级别设置 -->
     <root level="INFO">
         <appender-ref ref="console"/>

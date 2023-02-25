@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
     @Bean
-    public RedisTemplate redisTemplate(RedisConnectionFactory factory){
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());

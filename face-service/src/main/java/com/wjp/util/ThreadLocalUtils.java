@@ -1,7 +1,7 @@
 package com.wjp.util;
 
 
-import com.wjp.pojo.UserInfo;
+import com.wjp.pojo.BaseUser;
 
 /**
  * 登陆用户信息持有者
@@ -9,13 +9,13 @@ import com.wjp.pojo.UserInfo;
  */
 public class ThreadLocalUtils {
 
-    private static ThreadLocal<UserInfo> userThreadLocal = new ThreadLocal<UserInfo>();
+    private static ThreadLocal<BaseUser> userThreadLocal = new ThreadLocal<BaseUser>();
 
     /**
      * 向当前线程中存入用户数据
      * @param user
      */
-    public static void setUser(UserInfo user){
+    public static void setUser(BaseUser user){
         userThreadLocal.set(user);
     }
 
@@ -23,7 +23,7 @@ public class ThreadLocalUtils {
      * 从当前线程中获取用户数据
      * @return
      */
-    public static UserInfo getUser(){
+    public static BaseUser getUser(){
         return userThreadLocal.get();
     }
 
@@ -32,7 +32,7 @@ public class ThreadLocalUtils {
      * @return
      */
     public static int getUserId(){
-        return userThreadLocal.get().getUserId();
+        return userThreadLocal.get().getId();
     }
 
     public static void remove(){
