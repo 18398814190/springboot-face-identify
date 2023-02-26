@@ -2,8 +2,12 @@ package com.wjp.service.impl;
 
 import bean.dto.CompanyDTO;
 import bean.vo.CompanyVO;
+import bean.vo.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wjp.autoconfig.template.BaiduTemplate;
+import com.wjp.autoconfig.template.FaceTemplate;
 import com.wjp.constant.FaceConstants;
 import com.wjp.exception.FaceErrorEnum;
 import com.wjp.exception.FaceException;
@@ -16,10 +20,12 @@ import com.wjp.util.ThreadLocalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +41,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Resource
     private CompanyUserInfoMapper companyUserInfoMapper;
+
+    @Autowired
+    private FaceTemplate faceTemplate;
 
     @Override
     public void createCompany(CompanyDTO companyDTO) {
@@ -58,18 +67,29 @@ public class CompanyServiceImpl implements CompanyService {
         companyUserInfo.setRole(FaceConstants.COMPANY_ROLE_BOSS);
         companyUserInfo.setUserId(companyInfo.getCompanyOwner());
         companyUserInfoMapper.insert(companyUserInfo);
+
+        // 创建公司的FaceSet
+        try {
+            faceTemplate.createFaceSet(companyInfo.getCompanyName());
+        } catch (IOException e) {
+            log.error("创建faceSet失败,公司名称: {}", companyInfo.getCompanyName());
+        }
     }
 
     @Override
-    public List<CompanyVO> getCompanyList() {
+    public PageResult<CompanyVO> getCompanyList(Integer pageNum, Integer pageSize) {
         // 首先根据UserId查询CompanyUserInfo表，再去查出对应的list
+        IPage<CompanyUserInfo> page = new Page<>(pageNum, pageSize);
+        PageResult<CompanyVO> companyVOPageResult = new PageResult<>();
+
         List<CompanyVO> companyVOS = new ArrayList<>();
         int userId = ThreadLocalUtils.getUserId();
         LambdaQueryWrapper<CompanyUserInfo> lqw1 = new LambdaQueryWrapper<>();
         lqw1.eq(CompanyUserInfo::getUserId, userId);
-        List<CompanyUserInfo> companyUserInfos = companyUserInfoMapper.selectList(lqw1);
+        companyUserInfoMapper.selectPage(page, lqw1);
+        List<CompanyUserInfo> companyUserInfos = page.getRecords();
         if (CollectionUtils.isEmpty(companyUserInfos)) {
-            return companyVOS;
+            return companyVOPageResult;
         }
 
         for (CompanyUserInfo companyUserInfo : companyUserInfos) {
@@ -80,7 +100,8 @@ public class CompanyServiceImpl implements CompanyService {
             BeanUtils.copyProperties(companyInfo, companyVO);
             companyVOS.add(companyVO);
         }
-        return companyVOS;
+        companyVOPageResult = new PageResult<>(pageNum, pageSize, (int) page.getTotal(), companyVOS);
+        return companyVOPageResult;
     }
 
     @Override

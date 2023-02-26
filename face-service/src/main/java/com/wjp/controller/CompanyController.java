@@ -2,6 +2,7 @@ package com.wjp.controller;
 
 import bean.dto.CompanyDTO;
 import bean.vo.CompanyVO;
+import bean.vo.PageResult;
 import bean.vo.ResultVO;
 import com.wjp.service.CompanyService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -61,8 +61,9 @@ public class CompanyController {
      * @return
      */
     @GetMapping("/list")
-    public ResultVO<List<CompanyVO>> getCompanyList() {
-        List<CompanyVO> companyVO = companyService.getCompanyList();
+    public ResultVO<PageResult<CompanyVO>> getCompanyList(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                                          @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        PageResult<CompanyVO> companyVO = companyService.getCompanyList(pageNum, pageSize);
         return ResultVO.success(companyVO);
     }
 

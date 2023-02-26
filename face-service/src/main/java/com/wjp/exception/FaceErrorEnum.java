@@ -18,7 +18,13 @@ public enum FaceErrorEnum {
 
     ROLE_EXCEPTION(105, "没有权限作此操作"),
 
-    DELETE_COMPANY_EXCEPTION(106, "该公司存在员工，不可删除，请先删除公司下的员工");
+    DELETE_COMPANY_EXCEPTION(106, "该公司存在员工，不可删除，请先删除公司下的员工"),
+
+    COMPANY_NO_EXIST_EXCEPTION(107, "该公司不存在,请先创建"),
+
+    EMPLOYEE_EXIST_EXCEPTION(108, "已存在该员工"),
+
+    FACE_ENTRY_EXCEPTION(109, "已录入人脸，不可重复录入");
 
     private Integer code;
 

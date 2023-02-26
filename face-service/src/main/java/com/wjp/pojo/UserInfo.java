@@ -35,6 +35,11 @@ public class UserInfo extends BasePojo implements Serializable {
     private String nickName;
 
     /**
+     * 手机号
+     */
+    private String phoneNumber;
+
+    /**
      * 生日
      */
     private String userBirthday;

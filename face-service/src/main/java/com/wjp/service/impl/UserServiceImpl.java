@@ -7,7 +7,9 @@ import com.wjp.constant.FaceConstants;
 import com.wjp.exception.FaceErrorEnum;
 import com.wjp.exception.FaceException;
 import com.wjp.mapper.BaseUserMapper;
+import com.wjp.mapper.UserInfoMapper;
 import com.wjp.pojo.BaseUser;
+import com.wjp.pojo.UserInfo;
 import com.wjp.service.UserService;
 import com.wjp.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private BaseUserMapper baseUserMapper;
+
+    @Resource
+    private UserInfoMapper userInfoMapper;
 
     @Override
     public LoginVO login(String phone, String code) {
@@ -50,6 +55,10 @@ public class UserServiceImpl implements UserService {
             user = new BaseUser();
             user.setPhoneNumber(phone);
             baseUserMapper.insert(user);
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserId(user.getId());
+            userInfo.setPhoneNumber(phone);
+            userInfoMapper.insert(userInfo);
             isNew = true;
         }
 //        6.之后从redis中删除验证码，防止用户重复提交

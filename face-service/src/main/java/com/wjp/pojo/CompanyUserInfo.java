@@ -29,6 +29,11 @@ public class CompanyUserInfo extends BasePojo implements Serializable {
      */
     private Integer role;
 
+    /**
+     *  人脸录入标记 0未录入 1已录入
+     */
+    private Integer faceEntryFlag;
+
     private Integer userId;
 
     private Integer companyId;

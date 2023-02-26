@@ -6,6 +6,8 @@ import java.util.Date;
 
 @Data
 public class CompanyVO {
+
+    private Integer id;
     /**
      * 名称
      */

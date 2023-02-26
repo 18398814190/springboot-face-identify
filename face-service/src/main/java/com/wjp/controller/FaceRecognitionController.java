@@ -21,7 +21,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/face")
 @Slf4j
-public class FaceRecognitionTestController {
+public class FaceRecognitionController {
 
     @Autowired
     private FaceTemplate faceTemplate;
@@ -94,6 +94,28 @@ public class FaceRecognitionTestController {
             }
         }
         return ResultVO.success(face_token);
+    }
+
+    /**
+     * 人脸录入到指定公司
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/entry")
+    public ResultVO faceEntry(MultipartFile file, String companyId) throws IOException {
+        File faceFile = null;
+        try {
+            faceFile = MultipartFileToFile(file);
+            String detect = faceTemplate.detectFile(faceFile);
+            String faceToken = faceRecognitionService.getFaceToken(detect);
+            // 获取faceToken
+            faceRecognitionService.faceEntry(faceToken, companyId);
+        } finally {
+            if (faceFile != null) {
+                faceFile.delete();
+            }
+        }
+        return ResultVO.success(null);
     }
 
 
