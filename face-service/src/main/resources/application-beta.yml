@@ -18,8 +18,8 @@ face:
   config:
     # 构建FaceTeplate开关
     enable: true
-    apiSecret: 1ZV70Hh5JbP1KEKL0m-INs_zRJbNfKHo
-    apiKey: -YYaph4xNJN-ZSr3bDDnRxm8QazoCkPe
+    apiSecret: 
+    apiKey: 
     # 第三方接口服务地址
     baseUrl: https://api-cn.faceplusplus.com/facepp/v3
     # 人脸相似度通过标准
@@ -36,11 +36,11 @@ tencent:
     enable: true
     signName: 想吃肉0公众号
     templateId: 1713523
-    secretId: AKID2a2OYUFPPEpEvTntrmbHpJafYHqJE152
-    secretKey: zmNo23reJpBVhnsqgPwHS7f7QdgYEfx6
+    secretId: 
+    secretKey: 
     SdkAppId: 1400798338
 
 baidu:
   config:
     enable: true
-    ak: QcKshLHzPB9mMAVq1yFvsAk6oldKcpXu
+    ak: 
